@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123b72">
+<title>PF साथी — शुरुआती प्रोटोटाइप</title>
+<style>
+:root{--blue:#123b72;--blue2:#1f5aa6;--bg:#f3f6fb;--ink:#172033;--muted:#5b6577;--line:#dce4f0}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(135deg,var(--blue),var(--blue2));color:white;padding:24px 18px 22px;border-radius:0 0 24px 24px}
+.logo{font-size:28px;font-weight:800;letter-spacing:.2px}.tag{opacity:.9;margin-top:4px;font-size:14px}
+main{max-width:720px;margin:0 auto;padding:16px}.notice{background:#fff7df;border:1px solid #f0d98d;padding:12px 14px;border-radius:14px;font-size:13px;line-height:1.45;margin-bottom:14px}
+nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+nav a{display:block;text-align:center;text-decoration:none;background:white;color:var(--blue);border:1px solid var(--line);border-radius:12px;padding:12px 6px;font-weight:700;font-size:13px}
+section,.card{background:white;border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 3px 12px #18365a0b}
+h2{font-size:19px;margin:0 0 10px}p{line-height:1.5;margin:8px 0;color:var(--muted);font-size:14px}
+label{display:block;font-weight:650;font-size:14px;margin:12px 0 6px}
+input,select{width:100%;font:inherit;padding:12px;border:1px solid #c8d3e2;border-radius:10px;background:white}
+button{border:0;border-radius:11px;background:var(--blue2);color:white;padding:12px 15px;font:inherit;font-weight:700;width:100%;margin-top:12px}
+.result{display:none;background:#eaf4ff;border-radius:12px;padding:13px;margin-top:12px;line-height:1.5}
+.links a{display:block;color:var(--blue2);font-weight:700;text-decoration:none;padding:12px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.links a:last-child{border-bottom:0}.step{display:flex;gap:10px;margin:12px 0}.num{flex:0 0 28px;height:28px;background:#eaf1fc;color:var(--blue);border-radius:50%;display:grid;place-items:center;font-weight:800}
+footer{text-align:center;padding:14px 18px 28px;color:var(--muted);font-size:12px}
+.small{font-size:12px!important}.pill{display:inline-block;background:#e7f4ec;color:#17633b;border-radius:30px;padding:4px 9px;font-size:11px;font-weight:800}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🧾 PF साथी</div>
+  <div class="tag">PF की जानकारी, आसान भाषा में</div>
+  <p style="color:white;margin-top:12px">गाइड • अनुमानित कैलकुलेटर • आधिकारिक EPFO लिंक</p>
+</header>
+<main>
+  <div class="notice"><b>महत्वपूर्ण:</b> यह शुरुआती डेमो है, सरकारी ऐप नहीं। यह आपका असली PF बैलेंस नहीं दिखाता और PF क्लेम जमा नहीं करता। अपना UAN, पासवर्ड, Aadhaar या OTP इस डेमो में कभी न डालें।</div>
+  <nav>
+    <a href="#calculator">🧮 कैलकुलेटर</a>
+    <a href="#guide">📘 PF गाइड</a>
+    <a href="#official">🔗 सरकारी लिंक</a>
+  </nav>
+  <section id="calculator">
+    <span class="pill">डेमो सुविधा</span>
+    <h2 style="margin-top:8px">PF योगदान कैलकुलेटर</h2>
+    <p>अपनी मासिक Basic Salary + DA डालें। यह केवल सामान्य अनुमान है; वास्तविक योगदान आपके वेतन-स्ट्रक्चर और लागू नियमों के अनुसार अलग हो सकता है।</p>
+    <label for="salary">मासिक Basic Salary + DA (₹)</label>
+    <input id="salary" type="number" min="0" inputmode="numeric" placeholder="उदाहरण: 15000">
+    <label for="rate">कर्मचारी योगदान दर</label>
+    <select id="rate"><option value="12">12% (आम दर)</option><option value="10">10% (कुछ विशेष मामलों में)</option></select>
+    <button onclick="calc()">अनुमान निकालें</button>
+    <div id="result" class="result" aria-live="polite"></div>
+    <p class="small">नोट: नियोक्ता का योगदान EPF और EPS में नियमों के अनुसार बाँटा जा सकता है; इस डेमो में उसे वास्तविक PF बैलेंस के रूप में न समझें।</p>
+  </section>
+  <section id="guide">
+    <h2>PF निकालने की आसान गाइड</h2>
+    <div class="step"><div class="num">1</div><div><b>UAN और KYC जाँचें</b><p>अपने EPFO खाते में लॉगिन करके UAN, बैंक विवरण और KYC की स्थिति जाँचें।</p></div></div>
+    <div class="step"><div class="num">2</div><div><b>पात्रता और क्लेम प्रकार समझें</b><p>नौकरी में रहते हुए अग्रिम और नौकरी छोड़ने के बाद अंतिम निपटान के नियम अलग हो सकते हैं। आधिकारिक निर्देश पढ़ें।</p></div></div>
+    <div class="step"><div class="num">3</div><div><b>आधिकारिक पोर्टल से आगे बढ़ें</b><p>क्लेम की जानकारी और उपलब्ध विकल्प EPFO के आधिकारिक पोर्टल पर ही जाँचें।</p></div></div>
+    <div class="step"><div class="num">4</div><div><b>सुरक्षा रखें</b><p>किसी एजेंट या अनजान ऐप को OTP, पासवर्ड या बैंक जानकारी न दें। PF निकालने के लिए किसी को अग्रिम फीस देने से बचें।</p></div></div>
+  </section>
+  <section id="official" class="links">
+    <h2>आधिकारिक लिंक</h2>
+    <a href="https://www.epfindia.gov.in/" target="_blank" rel="noopener">EPFO मुख्य वेबसाइट ↗</a>
+    <a href="https://unifiedportal-mem.epfindia.gov.in/memberinterface/" target="_blank" rel="noopener">EPFO Member Portal ↗</a>
+    <a href="https://passbook.epfindia.gov.in/MemberPassBook/login" target="_blank" rel="noopener">EPFO Passbook Portal ↗</a>
+    <a href="https://web.umang.gov.in/" target="_blank" rel="noopener">UMANG आधिकारिक वेबसाइट ↗</a>
+    <p class="small">वेबसाइट के पते भविष्य में बदल सकते हैं। लिंक खोलने पर डोमेन ध्यान से जाँचें।</p>
+  </section>
+  <section>
+    <h2>अगला कदम</h2>
+    <p>यह पहला नमूना है। अगली बार इसमें भाषा बदलने का विकल्प, FAQ, शिकायत/हेल्पलाइन जानकारी और बेहतर डिज़ाइन जोड़ा जा सकता है। असली खाते से जुड़ने के लिए EPFO की अनुमति और सुरक्षित आधिकारिक एकीकरण जरूरी होगा।</p>
+  </section>
+</main>
+<footer>PF साथी • स्वतंत्र शैक्षिक प्रोटोटाइप • EPFO/UMANG का आधिकारिक ऐप नहीं</footer>
+<script>
+function calc(){
+ const s=Number(document.getElementById('salary').value);
+ const r=Number(document.getElementById('rate').value);
+ const box=document.getElementById('result');
+ if(!Number.isFinite(s)||s<=0){box.style.display='block';box.textContent='कृपया शून्य से अधिक मासिक Basic Salary + DA डालें।';return}
+ const amount=s*r/100;
+ box.style.display='block';
+ box.innerHTML='<b>अनुमानित कर्मचारी योगदान: ₹'+amount.toLocaleString('en-IN',{maximumFractionDigits:2})+'/माह</b><br>यह सिर्फ कर्मचारी के चुने हुए योगदान प्रतिशत का गणितीय अनुमान है, आपके खाते का वास्तविक बैलेंस या निकाली जा सकने वाली रकम नहीं।';
+}
+</script>
+</body>
+</html>
